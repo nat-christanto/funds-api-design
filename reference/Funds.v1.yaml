@@ -34,17 +34,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/journal'
-            examples:
-              sample request:
-                value:
-                  accountNumber: '085780873248'
-                  amount: '95000'
-                  fee: '5000'
-                  productName: Pembayaran Barang
-                  billerId: PURCHASE_ELEVENIA
-                  customerReferenceNumber: UPN000000457
-                  productCode: PYMNT
-                  partnerCode: P000001
+            examples: {}
           application/xml:
             schema:
               type: object
@@ -63,10 +53,10 @@ paths:
           description: OK
       operationId: get-reversal
       description: perform a reversal of transaction
-  credentials/validate:
+  /credentials/validate:
     parameters: []
     post:
-      summary: ''
+      summary: Pin Check
       operationId: password-checking
       responses:
         '200':
@@ -108,7 +98,15 @@ components:
         partner_code:
           type: string
       x-examples:
-        example-1: {}
+        sample-payment-request:
+          accountNumber: '085780873248'
+          amount: '95000'
+          fee: '5000'
+          productName: Pembayaran Barang
+          billerId: PURCHASE_ELEVENIA
+          customerReferenceNumber: UPN000000457
+          productCode: PYMNT
+          partnerCode: P000001
     response:
       title: response
       type: object
@@ -134,9 +132,10 @@ components:
           type: string
       x-examples:
         pin-sample:
-          mobile-phone-number: '081234588991'
+          mobile_phone_number: '081234588991'
           institution_code: PEDE
           pin: '123456'
+      description: pin
   securitySchemes:
     client-token:
       type: oauth2
