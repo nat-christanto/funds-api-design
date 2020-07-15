@@ -20,14 +20,8 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response'
-              examples:
-                sample-response:
-                  value:
-                    responseDescription: SUCCEED
-                    referenceNumber: '911800002545'
-                    transactionDate: '20190218102818'
-                    responseCode: '00'
+                $ref: '#/components/schemas/default-response'
+              examples: {}
       description: 'perform payment transaction '
       requestBody:
         content:
@@ -64,7 +58,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/response'
+                $ref: '#/components/schemas/default-response'
+              examples:
+                sample-pin-response:
+                  value:
+                    responseDescription: SUCCEED
+                    referenceNumber: '911800002545'
+                    transactionDate: '20190218102818'
+                    responseCode: '00'
       description: validate a user credential
       security:
         - client-token: []
@@ -75,6 +76,13 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/credential'
+            examples:
+              pin-request:
+                value:
+                  mobile_phone_number: '081234588991'
+                  institution_code: PEDE
+                  pin: '123456'
+        description: ''
 components:
   schemas:
     journal:
@@ -107,8 +115,8 @@ components:
           customerReferenceNumber: UPN000000457
           productCode: PYMNT
           partnerCode: P000001
-    response:
-      title: response
+    default-response:
+      title: default-response
       type: object
       description: a general response of Funds API
       properties:
@@ -120,6 +128,12 @@ components:
           type: string
         reference_number:
           type: string
+      x-examples:
+        default-sample-response:
+          responseDescription: SUCCEED
+          referenceNumber: '911800002545'
+          transactionDate: '20190218102818'
+          responseCode: '00'
     credential:
       title: credential
       type: object
