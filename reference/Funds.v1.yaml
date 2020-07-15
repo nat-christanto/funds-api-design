@@ -27,8 +27,6 @@ paths:
                     referenceNumber: '911800002545'
                     transactionDate: '20190218102818'
                     responseCode: '00'
-        '201':
-          description: Created
       description: 'perform payment transaction '
       requestBody:
         content:
