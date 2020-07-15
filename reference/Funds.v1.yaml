@@ -53,6 +53,12 @@ paths:
         - client-token: []
       tags:
         - debit
+  /reversal:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: get-reversal
 components:
   schemas:
     journal:
