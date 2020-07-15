@@ -5,9 +5,10 @@ info:
   contact:
     name: nat
     email: nat.christanto@email.ottodigital.id
-  description: 'API for transaction generation using a source of funds  '
+  description: 'API to conduct transaction using a source of funds  '
 servers:
-  - url: 'http://localhost:3000'
+  - url: 'https://funds.ottodigital.id'
+    description: funds
 paths:
   /transactions:
     post:
@@ -57,8 +58,33 @@ paths:
     get:
       summary: Your GET endpoint
       tags: []
-      responses: {}
+      responses:
+        '200':
+          description: OK
       operationId: get-reversal
+      description: perform a reversal of transaction
+  credentials/validate:
+    parameters: []
+    post:
+      summary: ''
+      operationId: password-checking
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+      description: validate a user credential
+      security:
+        - client-token: []
+      tags:
+        - credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/credential'
 components:
   schemas:
     journal:
@@ -81,6 +107,8 @@ components:
           type: string
         partner_code:
           type: string
+      x-examples:
+        example-1: {}
     response:
       title: response
       type: object
@@ -94,6 +122,21 @@ components:
           type: string
         reference_number:
           type: string
+    credential:
+      title: credential
+      type: object
+      properties:
+        mobile_phone_number:
+          type: string
+        institution_code:
+          type: string
+        pin:
+          type: string
+      x-examples:
+        pin-sample:
+          mobile-phone-number: '081234588991'
+          institution_code: PEDE
+          pin: '123456'
   securitySchemes:
     client-token:
       type: oauth2
@@ -104,3 +147,4 @@ components:
           scopes: {}
 tags:
   - name: debit
+  - name: credentials
