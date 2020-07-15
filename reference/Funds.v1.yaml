@@ -20,6 +20,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/response'
+              examples:
+                sample-response:
+                  value:
+                    responseDescription: SUCCEED
+                    referenceNumber: '911800002545'
+                    transactionDate: '20190218102818'
+                    responseCode: '00'
         '201':
           description: Created
       description: 'perform payment transaction '
@@ -29,7 +36,16 @@ paths:
             schema:
               $ref: '#/components/schemas/journal'
             examples:
-              example-1: {}
+              sample request:
+                value:
+                  accountNumber: '085780873248'
+                  amount: '95000'
+                  fee: '5000'
+                  productName: Pembayaran Barang
+                  billerId: PURCHASE_ELEVENIA
+                  customerReferenceNumber: UPN000000457
+                  productCode: PYMNT
+                  partnerCode: P000001
           application/xml:
             schema:
               type: object
