@@ -10,7 +10,7 @@ servers:
   - url: 'https://funds.ottodigital.id'
     description: funds
 paths:
-  /transactions:
+  /payments:
     post:
       summary: Payment
       operationId: post-transactions
@@ -20,15 +20,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/default-response'
+                $ref: '#/components/schemas/journal-response'
               examples: {}
-      description: 'perform payment transaction '
+      description: create a payment
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/journal'
-            examples: {}
+              $ref: '#/components/schemas/payment-request'
+            examples:
+              payment-req-sample:
+                value:
+                  mobile_phone_number: '085780873248'
+                  amount: '95000'
+                  fee: '5000'
+                  product_name: Pembayaran Barang
+                  biller_id: PURCHASE_ELEVENIA
+                  customer_reference_number: UPN000000457
+                  product_code: PYMNT
+                  partner_code: P000001
           application/xml:
             schema:
               type: object
@@ -38,6 +48,7 @@ paths:
         - client-token: []
       tags:
         - debit
+    parameters: []
   /reversal:
     get:
       summary: Your GET endpoint
@@ -58,7 +69,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/default-response'
+                $ref: '#/components/schemas/journal-response'
               examples:
                 sample-pin-response:
                   value:
@@ -85,9 +96,20 @@ paths:
         description: ''
 components:
   schemas:
-    journal:
+    payment-request:
       title: journal
       type: object
+      x-examples:
+        sample-payment-request:
+          mobile_phone_number: '085780873248'
+          amount: '95000'
+          fee: '5000'
+          product_name: Pembayaran Barang
+          biller_id: PURCHASE_ELEVENIA
+          customer_reference_number: UPN000000457
+          product_code: PYMNT
+          partner_code: P000001
+      description: example to perform payment request
       properties:
         mobile_phone_number:
           type: string
@@ -95,27 +117,41 @@ components:
           type: integer
         fee:
           type: integer
-        product_name:
+        trace_id:
           type: string
-        biller_id:
+        product_details:
+          type: object
+          required:
+            - product_name
+            - billing_group
+            - product_code
+          properties:
+            product_name:
+              type: string
+            billing_group:
+              type: string
+            product_code:
+              type: string
+        references:
+          type: object
+          required:
+            - app_reference_number
+            - partner_code
+          properties:
+            app_reference_number:
+              type: string
+            partner_code:
+              type: string
+        '':
           type: string
-        customer_referencce_number:
-          type: string
-        product_code:
-          type: string
-        partner_code:
-          type: string
-      x-examples:
-        sample-payment-request:
-          accountNumber: '085780873248'
-          amount: '95000'
-          fee: '5000'
-          productName: Pembayaran Barang
-          billerId: PURCHASE_ELEVENIA
-          customerReferenceNumber: UPN000000457
-          productCode: PYMNT
-          partnerCode: P000001
-    default-response:
+      required:
+        - mobile_phone_number
+        - amount
+        - fee
+        - trace_id
+        - product_details
+        - references
+    journal-response:
       title: default-response
       type: object
       description: a general response of Funds API
