@@ -1,0 +1,86 @@
+openapi: 3.0.0
+info:
+  title: Funds
+  version: '1.0'
+  contact:
+    name: nat
+    email: nat.christanto@email.ottodigital.id
+  description: 'API for transaction generation using a source of funds  '
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /transactions:
+    post:
+      summary: Payment
+      operationId: post-transactions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/response'
+        '201':
+          description: Created
+      description: 'perform payment transaction '
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/journal'
+            examples:
+              example-1: {}
+          application/xml:
+            schema:
+              type: object
+              properties: {}
+        description: it will be described later
+      security:
+        - client-token: []
+      tags:
+        - debit
+components:
+  schemas:
+    journal:
+      title: journal
+      type: object
+      properties:
+        mobile_phone_number:
+          type: string
+        amount:
+          type: integer
+        fee:
+          type: integer
+        product_name:
+          type: string
+        biller_id:
+          type: string
+        customer_referencce_number:
+          type: string
+        product_code:
+          type: string
+        partner_code:
+          type: string
+    response:
+      title: response
+      type: object
+      description: a general response of Funds API
+      properties:
+        response_description:
+          type: string
+        response_code:
+          type: string
+        transaction_date:
+          type: string
+        reference_number:
+          type: string
+  securitySchemes:
+    client-token:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: ''
+          refreshUrl: ''
+          scopes: {}
+tags:
+  - name: debit
