@@ -129,22 +129,6 @@ components:
         - trace_id
         - product_details
         - references
-    credential:
-      title: credential
-      type: object
-      properties:
-        mobile_phone_number:
-          type: string
-        institution_code:
-          type: string
-        pin:
-          type: string
-      x-examples:
-        pin-sample:
-          mobile_phone_number: '081234588991'
-          institution_code: PEDE
-          pin: '123456'
-      description: pin
     payment-response:
       title: payment-response
       type: object
