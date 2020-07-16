@@ -20,7 +20,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/journal-response'
+                $ref: '#/components/schemas/payment-response'
               examples: {}
       description: create a payment
       requestBody:
@@ -57,14 +57,24 @@ components:
       x-examples:
         sample-payment-request:
           mobile_phone_number: '085780873248'
-          amount: '95000'
-          fee: '5000'
-          product_name: Pembayaran Barang
-          biller_id: PURCHASE_ELEVENIA
-          customer_reference_number: UPN000000457
-          product_code: PYMNT
-          partner_code: P000001
-      description: a model to conduct payment
+          trace_id: blr-231-890
+          product_details:
+            product_code: SIMANIS
+            product_name: Pembelian Emas
+            billing_group: INVESTMENT
+          references:
+            app_reference_number: PEDE-89011234
+            app_code: PEDE
+            user_api_key: cd78h1loenuxmq
+          money:
+            amount: 8000
+            fee: 0
+          credentials:
+            password:
+              key_version: 2
+              value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
+              format: aes-cbc
+      description: a payment request model
       properties:
         mobile_phone_number:
           type: string
@@ -93,6 +103,8 @@ components:
               type: string
             app_code:
               type: string
+            user_api_key:
+              type: string
         credentials:
           type: object
           properties:
@@ -117,25 +129,6 @@ components:
         - trace_id
         - product_details
         - references
-    journal-response:
-      title: default-response
-      type: object
-      description: a general response of Funds API
-      properties:
-        response_description:
-          type: string
-        response_code:
-          type: string
-        transaction_date:
-          type: string
-        reference_number:
-          type: string
-      x-examples:
-        default-sample-response:
-          responseDescription: SUCCEED
-          referenceNumber: '911800002545'
-          transactionDate: '20190218102818'
-          responseCode: '00'
     credential:
       title: credential
       type: object
@@ -156,6 +149,27 @@ components:
       title: payment-response
       type: object
       description: a response after successfully capturing a payment
+      x-examples:
+        'payment success ':
+          response_code: G0000
+          response_message: SUCCESS
+          meta:
+            debug_param: ''
+          mobile_phone_number: '085780873248'
+          trace_id: blr-231-890
+          product_details:
+            product_code: SIMANIS
+            product_name: Pembelian Emas
+            billing_group: INVESTMENT
+          references:
+            app_reference_number: PEDE-89011234
+            app_code: PEDE
+            user_api_key: cd78h1loenuxmq
+            sof_id: 231
+            sof_reference_number: B789kuolpsw3
+          money:
+            amount: 8000
+            fee: 0
       properties:
         response_code:
           type: string
@@ -190,8 +204,12 @@ components:
               type: string
             app_code:
               type: string
-        '':
-          type: string
+            sof_id:
+              type: integer
+            sof_reference_number:
+              type: string
+            user_api_key:
+              type: string
     meta:
       title: meta
       type: object
@@ -200,6 +218,7 @@ components:
           type: string
         '':
           type: string
+      description: 'Meta struct for additional details. Might be used for troubleshooting, etc'
     error-response:
       title: error-response
       type: object
