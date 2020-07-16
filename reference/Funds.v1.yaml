@@ -49,42 +49,6 @@ paths:
       tags:
         - debit
     parameters: []
-  /credentials/validate:
-    parameters: []
-    post:
-      summary: Pin Check
-      operationId: password-checking
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/journal-response'
-              examples:
-                sample-pin-response:
-                  value:
-                    responseDescription: SUCCEED
-                    referenceNumber: '911800002545'
-                    transactionDate: '20190218102818'
-                    responseCode: '00'
-      description: validate a user credential
-      security:
-        - client-token: []
-      tags:
-        - credentials
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/credential'
-            examples:
-              pin-request:
-                value:
-                  mobile_phone_number: '081234588991'
-                  institution_code: PEDE
-                  pin: '123456'
-        description: ''
 components:
   schemas:
     payment-request:
