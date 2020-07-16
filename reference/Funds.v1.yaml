@@ -97,7 +97,7 @@ paths:
 components:
   schemas:
     payment-request:
-      title: journal
+      title: payment-request
       type: object
       x-examples:
         sample-payment-request:
@@ -109,14 +109,10 @@ components:
           customer_reference_number: UPN000000457
           product_code: PYMNT
           partner_code: P000001
-      description: example to perform payment request
+      description: a model to conduct payment
       properties:
         mobile_phone_number:
           type: string
-        amount:
-          type: integer
-        fee:
-          type: integer
         trace_id:
           type: string
         product_details:
@@ -136,18 +132,33 @@ components:
           type: object
           required:
             - app_reference_number
-            - partner_code
+            - app_code
           properties:
             app_reference_number:
               type: string
-            partner_code:
+            app_code:
               type: string
-        '':
-          type: string
+        credential:
+          type: object
+          properties:
+            password:
+              type: object
+              properties:
+                key_version:
+                  type: string
+                format:
+                  type: string
+                value:
+                  type: string
+        money:
+          type: object
+          properties:
+            amount:
+              type: integer
+            fee:
+              type: integer
       required:
         - mobile_phone_number
-        - amount
-        - fee
         - trace_id
         - product_details
         - references
@@ -186,6 +197,40 @@ components:
           institution_code: PEDE
           pin: '123456'
       description: pin
+    payment-response:
+      title: payment-response
+      type: object
+      description: a response after successfully capturing a payment
+      properties:
+        response_code:
+          type: string
+        response_message:
+          type: string
+        meta:
+          $ref: '#/components/schemas/meta'
+        trace_id:
+          type: string
+        mobile_phone_number:
+          type: string
+        product_details:
+          type: object
+          properties:
+            product_code:
+              type: string
+            product_name:
+              type: string
+            billing_group:
+              type: string
+        '':
+          type: string
+    meta:
+      title: meta
+      type: object
+      properties:
+        debug_param:
+          type: string
+        '':
+          type: string
   securitySchemes:
     client-token:
       type: oauth2
