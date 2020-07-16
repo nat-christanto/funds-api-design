@@ -49,15 +49,6 @@ paths:
       tags:
         - debit
     parameters: []
-  /reversal:
-    get:
-      summary: Your GET endpoint
-      tags: []
-      responses:
-        '200':
-          description: OK
-      operationId: get-reversal
-      description: perform a reversal of transaction
   /credentials/validate:
     parameters: []
     post:
@@ -138,7 +129,7 @@ components:
               type: string
             app_code:
               type: string
-        credential:
+        credentials:
           type: object
           properties:
             password:
@@ -221,6 +212,20 @@ components:
               type: string
             billing_group:
               type: string
+        money:
+          type: object
+          properties:
+            amount:
+              type: integer
+            fee:
+              type: integer
+        references:
+          type: object
+          properties:
+            app_reference_number:
+              type: string
+            app_code:
+              type: string
         '':
           type: string
     meta:
@@ -231,6 +236,29 @@ components:
           type: string
         '':
           type: string
+    error-response:
+      title: error-response
+      type: object
+      description: a general error response
+      x-examples:
+        error-sample:
+          mobile_phone_number: '08129489292'
+          response_code: G0001
+          response_message: Internal error occured
+          meta:
+            debug_param: HMAC verification failed
+          trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
+      properties:
+        mobile_phone_number:
+          type: string
+        response_code:
+          type: string
+        response_message:
+          type: string
+        trace_id:
+          type: string
+        meta:
+          $ref: '#/components/schemas/meta'
   securitySchemes:
     client-token:
       type: oauth2
