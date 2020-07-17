@@ -209,7 +209,7 @@ components:
           $ref: '#/components/schemas/meta'
         trace_id:
           type: string
-        mobile_phone_number:
+        account_no:
           type: string
         product_details:
           type: object
