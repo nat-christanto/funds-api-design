@@ -28,7 +28,7 @@ paths:
                     response_message: SUCCESS
                     meta:
                       debug_param: ''
-                    mobile_phone_number: '085780873248'
+                    account_number: '085780873248'
                     trace_id: blr-231-890
                     product_details:
                       product_code: SIMANIS
@@ -52,7 +52,7 @@ paths:
               examples:
                 error-sample:
                   value:
-                    mobile_phone_number: '08129489292'
+                    account_number: '08129489292'
                     response_code: G0001
                     response_message: Internal error occured
                     meta:
@@ -67,7 +67,7 @@ paths:
             examples:
               payment-req-sample:
                 value:
-                  mobile_phone_number: '085780873248'
+                  account_number: '085780873248'
                   trace_id: blr-231-890
                   product_details:
                     product_code: SIMANIS
@@ -102,7 +102,7 @@ components:
       type: object
       x-examples:
         sample-payment-request:
-          account_no: '085780873248'
+          account_number: '085780873248'
           trace_id: blr-231-890
           product_details:
             product_code: SIMANIS
@@ -122,7 +122,7 @@ components:
               format: aes-cbc
       description: a payment request model
       properties:
-        account_no:
+        account_number:
           type: string
         trace_id:
           type: string
@@ -171,7 +171,7 @@ components:
             fee:
               type: integer
       required:
-        - account_no
+        - account_number
         - trace_id
         - product_details
         - references
@@ -185,7 +185,7 @@ components:
           response_message: SUCCESS
           meta:
             debug_param: ''
-          account_no: '085780873248'
+          account_number: '085780873248'
           trace_id: blr-231-890
           product_details:
             product_code: SIMANIS
@@ -209,7 +209,7 @@ components:
           $ref: '#/components/schemas/meta'
         trace_id:
           type: string
-        account_no:
+        account_number:
           type: string
         product_details:
           type: object
@@ -253,14 +253,14 @@ components:
       description: a general error response
       x-examples:
         error-sample:
-          account_no: '08129489292'
+          account_number: '08129489292'
           response_code: G0001
           response_message: Internal error occured
           meta:
             debug_param: HMAC verification failed
           trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
       properties:
-        account_no:
+        account_number:
           type: string
         response_code:
           type: string
