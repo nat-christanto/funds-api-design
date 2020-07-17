@@ -253,14 +253,14 @@ components:
       description: a general error response
       x-examples:
         error-sample:
-          mobile_phone_number: '08129489292'
+          account_no: '08129489292'
           response_code: G0001
           response_message: Internal error occured
           meta:
             debug_param: HMAC verification failed
           trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
       properties:
-        mobile_phone_number:
+        account_no:
           type: string
         response_code:
           type: string
