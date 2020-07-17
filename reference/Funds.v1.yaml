@@ -10,7 +10,7 @@ servers:
   - url: 'https://funds.ottodigital.id'
     description: funds
 paths:
-  /payments:
+  /ottocash/payments:
     post:
       summary: Payment
       operationId: post-transactions
@@ -95,6 +95,39 @@ paths:
       tags:
         - transactions
     parameters: []
+  /users:
+    post:
+      summary: ''
+      operationId: post-users
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_api_key:
+                    type: string
+                  response_code:
+                    type: string
+                  response_message:
+                    type: string
+                  meta:
+                    $ref: '#/components/schemas/meta'
+      description: create a new user which will generate an user-api-key
+      security:
+        - client-grant: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                app_code:
+                  type: string
+              required:
+                - app_code
 components:
   schemas:
     payment-request:
@@ -144,6 +177,7 @@ components:
           required:
             - app_reference_number
             - app_code
+            - user_api_key
           properties:
             app_reference_number:
               type: string
@@ -153,9 +187,15 @@ components:
               type: string
         credentials:
           type: object
+          required:
+            - password
           properties:
             password:
               type: object
+              required:
+                - key_version
+                - format
+                - value
               properties:
                 key_version:
                   type: string
@@ -165,6 +205,9 @@ components:
                   type: string
         money:
           type: object
+          required:
+            - amount
+            - fee
           properties:
             amount:
               type: integer
@@ -175,6 +218,8 @@ components:
         - trace_id
         - product_details
         - references
+        - credentials
+        - money
     payment-response:
       title: payment-response
       type: object
