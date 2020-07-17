@@ -12,7 +12,7 @@ servers:
 paths:
   /ottocash/payments:
     post:
-      summary: Payment
+      summary: Perform a payment using ottocash
       operationId: post-transactions
       responses:
         '200':
@@ -58,7 +58,7 @@ paths:
                     meta:
                       debug_param: HMAC verification failed
                     trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
-      description: create a payment
+      description: create a payment request to ottocash server
       requestBody:
         content:
           application/json:
@@ -97,7 +97,7 @@ paths:
     parameters: []
   /users:
     post:
-      summary: ''
+      summary: create a new user-api-key
       operationId: post-users
       responses:
         '201':
@@ -128,6 +128,8 @@ paths:
                   type: string
               required:
                 - app_code
+      tags:
+        - user
 components:
   schemas:
     payment-request:
@@ -328,3 +330,4 @@ components:
       description: a grant access that will be used by partner
 tags:
   - name: transactions
+  - name: user
