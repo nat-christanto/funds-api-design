@@ -85,10 +85,6 @@ paths:
                       key_version: 2
                       value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
                       format: aes-cbc
-          application/xml:
-            schema:
-              type: object
-              properties: {}
         description: A payment request
       security:
         - client-grant: []
@@ -123,7 +119,7 @@ paths:
                     response_message: success
                     meta:
                       debug_param: ''
-      description: create a new user which will generate an user-api-key
+      description: create a new user which resulted a new user-api-key
       security:
         - client-grant: []
       requestBody:
