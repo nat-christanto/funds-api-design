@@ -159,12 +159,15 @@ components:
               key_version: 2
               value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
               format: aes-cbc
+          description: buy a gold
       description: a payment request model
       properties:
         account_number:
           type: string
+          description: fill it with mobile phone number
         trace_id:
           type: string
+          description: it should be defined unique for debugging purpose
         product_details:
           type: object
           required:
@@ -174,10 +177,13 @@ components:
           properties:
             product_name:
               type: string
+              description: refer to product name which defined by ottocash
             billing_group:
               type: string
+              description: refer to billing id which defined by ottocash
             product_code:
               type: string
+              description: refere to product code which defined by ottocash
         references:
           type: object
           required:
@@ -219,6 +225,8 @@ components:
               type: integer
             fee:
               type: integer
+        description:
+          type: string
       required:
         - account_number
         - trace_id
@@ -226,6 +234,7 @@ components:
         - references
         - credentials
         - money
+        - description
     payment-response:
       title: payment-response
       type: object
