@@ -43,6 +43,7 @@ paths:
                     money:
                       amount: 8000
                       fee: 0
+                    description: buy a gold
         '422':
           description: Unprocessable Entity (WebDAV)
           content:
@@ -115,9 +116,9 @@ paths:
               examples:
                 user-response:
                   value:
-                    user_api_key: 8uoaopsmd0
                     response_code: G0000
-                    response_message: success
+                    response_message: SUCCESS
+                    user_api_key: 8uoaopsmd0
                     meta:
                       debug_param: ''
       description: create a new user which resulted a new user-api-key
@@ -133,6 +134,10 @@ paths:
                   type: string
               required:
                 - app_code
+            examples:
+              create-user-example:
+                value:
+                  app_code: PEDE
       tags:
         - user
 components:
