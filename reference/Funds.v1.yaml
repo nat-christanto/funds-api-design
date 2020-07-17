@@ -115,6 +115,14 @@ paths:
                     type: string
                   meta:
                     $ref: '#/components/schemas/meta'
+              examples:
+                user-response:
+                  value:
+                    user_api_key: 8uoaopsmd0
+                    response_code: G0000
+                    response_message: success
+                    meta:
+                      debug_param: ''
       description: create a new user which will generate an user-api-key
       security:
         - client-grant: []
