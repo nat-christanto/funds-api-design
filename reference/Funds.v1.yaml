@@ -75,7 +75,7 @@ paths:
   /ottocash/payments:
     post:
       summary: Perform a payment using ottocash
-      operationId: ottocash-payment-post
+      operationId: create-ottocash-payment
       responses:
         '200':
           description: OK
@@ -157,8 +157,8 @@ paths:
         - transaction
   /users:
     post:
-      summary: create a new user-api-key
-      operationId: post-users
+      summary: register a new user
+      operationId: user-registration
       responses:
         '201':
           description: Created
@@ -206,6 +206,7 @@ paths:
               create-user-example:
                 value:
                   app_code: PEDE
+                  trace_id: kiop09u2lljas
         description: ''
       tags:
         - user
