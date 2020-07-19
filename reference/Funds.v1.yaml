@@ -10,7 +10,7 @@ servers:
   - url: 'https://funds.ottodigital.id'
     description: funds
 paths:
-  /ottocash/payments:
+  '/ottocash/payments/{sof_id}':
     post:
       summary: Perform a payment using ottocash
       operationId: post-transactions
@@ -44,6 +44,7 @@ paths:
                       amount: 8000
                       fee: 0
                     description: buy a gold
+                    transaction_date: '2020-02-26T07:48:00'
         '422':
           description: Unprocessable Entity (WebDAV)
           content:
@@ -92,7 +93,52 @@ paths:
         - client-grant: []
       tags:
         - transactions
-    parameters: []
+    parameters:
+      - schema:
+          type: string
+        name: sof_id
+        in: path
+        description: a transaction id which resulted from a successful payment
+        required: true
+    get:
+      summary: ''
+      operationId: get-ottocash-payments
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-response'
+              examples:
+                payment-success:
+                  value:
+                    response_code: G0000
+                    response_message: SUCCESS
+                    meta:
+                      debug_param: ''
+                    account_number: '085780873248'
+                    trace_id: blr-231-890
+                    product_details:
+                      product_code: SIMANIS
+                      product_name: Pembelian Emas
+                      billing_group: INVESTMENT
+                    references:
+                      app_reference_number: PEDE-89011234
+                      app_code: PEDE
+                      user_api_key: cd78h1loenuxmq
+                      sof_id: 231
+                      sof_reference_number: B789kuolpsw3
+                    money:
+                      amount: 8000
+                      fee: 0
+                    description: buy a gold
+                    transaction_date: '2020-02-26T07:48:00'
+      description: get a detail information about an accomplished transaction
+      security:
+        - client-grant: []
+      tags:
+        - transactions
   /users:
     post:
       summary: create a new user-api-key
@@ -113,6 +159,8 @@ paths:
                     type: string
                   meta:
                     $ref: '#/components/schemas/meta'
+                  trace_id:
+                    type: string
               examples:
                 user-response:
                   value:
@@ -121,6 +169,7 @@ paths:
                     user_api_key: 8uoaopsmd0
                     meta:
                       debug_param: ''
+                    trace_id: 890hjukolpoyuio
       description: create a new user which resulted a new user-api-key
       security:
         - client-grant: []
@@ -132,12 +181,16 @@ paths:
               properties:
                 app_code:
                   type: string
+                trace_id:
+                  type: string
               required:
                 - app_code
+                - trace_id
             examples:
               create-user-example:
                 value:
                   app_code: PEDE
+        description: ''
       tags:
         - user
 components:
@@ -145,27 +198,6 @@ components:
     payment-request:
       title: payment-request
       type: object
-      x-examples:
-        sample-payment-request:
-          account_number: '085780873248'
-          trace_id: blr-231-890
-          product_details:
-            product_code: SIMANIS
-            product_name: Pembelian Emas
-            billing_group: INVESTMENT
-          references:
-            app_reference_number: PEDE-89011234
-            app_code: PEDE
-            user_api_key: cd78h1loenuxmq
-          money:
-            amount: 8000
-            fee: 0
-          credentials:
-            password:
-              key_version: 2
-              value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
-              format: aes-cbc
-          description: buy a gold
       description: a payment request model
       properties:
         account_number:
@@ -246,27 +278,6 @@ components:
       title: payment-response
       type: object
       description: a response after successfully capturing a payment
-      x-examples:
-        'payment success ':
-          response_code: G0000
-          response_message: SUCCESS
-          meta:
-            debug_param: ''
-          account_number: '085780873248'
-          trace_id: blr-231-890
-          product_details:
-            product_code: SIMANIS
-            product_name: Pembelian Emas
-            billing_group: INVESTMENT
-          references:
-            app_reference_number: PEDE-89011234
-            app_code: PEDE
-            user_api_key: cd78h1loenuxmq
-            sof_id: 231
-            sof_reference_number: B789kuolpsw3
-          money:
-            amount: 8000
-            fee: 0
       properties:
         response_code:
           type: string
@@ -307,6 +318,8 @@ components:
               type: string
             user_api_key:
               type: string
+        transaction_date:
+          type: string
     meta:
       title: meta
       type: object
@@ -318,14 +331,6 @@ components:
       title: error-response
       type: object
       description: a general error response
-      x-examples:
-        error-sample:
-          account_number: '08129489292'
-          response_code: G0001
-          response_message: Internal error occured
-          meta:
-            debug_param: HMAC verification failed
-          trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
       properties:
         account_number:
           type: string
