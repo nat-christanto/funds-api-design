@@ -7,7 +7,7 @@ info:
     email: nat.christanto@email.ottodigital.id
   description: 'API to conduct transaction using a source of funds  '
 servers:
-  - url: 'https://funds.ottodigital.id'
+  - url: 'https://gateway-dev.ottodigital.id/funds'
     description: funds
 paths:
   '/ottocash/payments/{sof_id}':
@@ -52,6 +52,21 @@ paths:
                       fee: 0
                     description: buy a digital gold
                     transaction_date: '2020-02-26T07:48:00'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                payment-not-found:
+                  value:
+                    account_number: ''
+                    response_code: G0002
+                    response_message: Payment ID not found
+                    meta:
+                      debug_param: wrong payment id
+                    trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
       description: get a detail information of an accomplished transaction
       security:
         - client-grant: []
