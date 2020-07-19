@@ -11,88 +11,6 @@ servers:
     description: funds
 paths:
   '/ottocash/payments/{sof_id}':
-    post:
-      summary: Perform a payment using ottocash
-      operationId: post-transactions
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/payment-response'
-              examples:
-                payment-success:
-                  value:
-                    response_code: G0000
-                    response_message: SUCCESS
-                    meta:
-                      debug_param: ''
-                    account_number: '085780873248'
-                    trace_id: blr-231-890
-                    product_details:
-                      product_code: SIMANIS
-                      product_name: Pembelian Emas
-                      billing_group: INVESTMENT
-                    references:
-                      app_reference_number: PEDE-89011234
-                      app_code: PEDE
-                      user_api_key: cd78h1loenuxmq
-                      sof_id: 231
-                      sof_reference_number: B789kuolpsw3
-                    money:
-                      amount: 8000
-                      fee: 0
-                    description: buy a gold
-                    transaction_date: '2020-02-26T07:48:00'
-        '422':
-          description: Unprocessable Entity (WebDAV)
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/error-response'
-              examples:
-                error-sample:
-                  value:
-                    account_number: '08129489292'
-                    response_code: G0001
-                    response_message: Internal error occured
-                    meta:
-                      debug_param: HMAC verification failed
-                    trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
-      description: create a payment request to ottocash server
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payment-request'
-            examples:
-              payment-req-sample:
-                value:
-                  account_number: '085780873248'
-                  trace_id: blr-231-890
-                  product_details:
-                    product_code: SIMANIS
-                    product_name: Pembelian Emas
-                    billing_group: INVESTMENT
-                  references:
-                    app_reference_number: PEDE-89011234
-                    app_code: PEDE
-                    user_api_key: cd78h1loenuxmq
-                  money:
-                    amount: 8000
-                    fee: 0
-                  credentials:
-                    password:
-                      key_version: 2
-                      value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
-                      format: aes-cbc
-                  description: buy a gold
-        description: A payment request
-      security:
-        - client-grant: []
-      tags:
-        - transactions
     parameters:
       - schema:
           type: string
@@ -101,8 +19,8 @@ paths:
         description: a transaction id which resulted from a successful payment
         required: true
     get:
-      summary: ''
-      operationId: get-ottocash-payments
+      summary: get payment details
+      operationId: get-ottocash-payment
       responses:
         '200':
           description: OK
@@ -134,7 +52,7 @@ paths:
                       fee: 0
                     description: buy a gold
                     transaction_date: '2020-02-26T07:48:00'
-      description: get a detail information about an accomplished transaction
+      description: get a detail information of an accomplished transaction
       security:
         - client-grant: []
       tags:
@@ -193,6 +111,89 @@ paths:
         description: ''
       tags:
         - user
+  /ottocash/payments:
+    post:
+      summary: Perform a payment using ottocash
+      operationId: ottocash-payment-post
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/payment-response'
+              examples:
+                payment-success:
+                  value:
+                    response_code: G0000
+                    response_message: SUCCESS
+                    meta:
+                      debug_param: ''
+                    account_number: '085780873248'
+                    trace_id: blr-231-890
+                    product_details:
+                      product_code: SIMANIS
+                      product_name: Pembelian Emas
+                      billing_group: INVESTMENT
+                    references:
+                      app_reference_number: PEDE-89011234
+                      app_code: PEDE
+                      user_api_key: cd78h1loenuxmq
+                      sof_id: 231
+                      sof_reference_number: B789kuolpsw3
+                    money:
+                      amount: 8000
+                      fee: 0
+                    description: buy a gold
+                    transaction_date: '2020-02-26T07:48:00'
+        '422':
+          description: Unprocessable Entity (WebDAV)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error-response'
+              examples:
+                error-payment-sample:
+                  value:
+                    account_number: '08129489292'
+                    response_code: G0001
+                    response_message: Internal error occured
+                    meta:
+                      debug_param: HMAC verification failed
+                    trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
+      description: create a payment request to ottocash server
+      security:
+        - client-grant: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payment-request'
+            examples:
+              payment-req-sample:
+                value:
+                  account_number: '085780873248'
+                  trace_id: blr-231-890
+                  product_details:
+                    product_code: SIMANIS
+                    product_name: Pembelian Emas
+                    billing_group: INVESTMENT
+                  references:
+                    app_reference_number: PEDE-89011234
+                    app_code: PEDE
+                    user_api_key: cd78h1loenuxmq
+                  money:
+                    amount: 8000
+                    fee: 0
+                  credentials:
+                    password:
+                      key_version: 2
+                      value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
+                      format: aes-cbc
+                  description: buy a gold
+        description: A payment request
+      tags:
+        - transactions
 components:
   schemas:
     payment-request:
