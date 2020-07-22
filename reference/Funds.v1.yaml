@@ -337,6 +337,8 @@ components:
               type: string
         transaction_date:
           type: string
+        state:
+          type: string
     meta:
       title: meta
       type: object
