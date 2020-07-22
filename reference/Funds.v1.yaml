@@ -52,6 +52,7 @@ paths:
                       fee: 0
                     description: buy a digital gold
                     transaction_date: '2020-02-26T07:48:00'
+                    state: SUCCESS
         '404':
           description: Not Found
           content:
@@ -107,6 +108,7 @@ paths:
                       fee: 0
                     description: buy a digital gold
                     transaction_date: '2020-02-26T07:48:00'
+                    state: SUCCESS
         '422':
           description: Unprocessable Entity (WebDAV)
           content:
