@@ -370,8 +370,7 @@ components:
         clientCredentials:
           tokenUrl: 'https://token.ottodigital.id'
           scopes:
-            read: read a resource
-            write: write a resource
+            optima-client: read-write resource for client
           refreshUrl: 'https://refresh.ottodigital.id'
       description: a grant access that will be used by partner
 tags:
