@@ -1,25 +1,26 @@
 openapi: 3.0.0
 info:
   title: Funds
-  version: '1.0'
+  description: 'API to conduct transaction using a source of funds  '
   contact:
     name: nat
     email: nat.christanto@email.ottodigital.id
-  description: 'API to conduct transaction using a source of funds  '
+  version: '1.0'
 servers:
   - url: 'https://gateway-dev.ottodigital.id/funds'
     description: funds
+security:
+  - default: []
+tags:
+  - name: user
+  - name: transaction
 paths:
   '/ottocash/payments/{sof_id}':
-    parameters:
-      - schema:
-          type: string
-        name: sof_id
-        in: path
-        description: a transaction id which resulted from a successful payment
-        required: true
     get:
+      tags:
+        - transaction
       summary: Get payment details
+      description: get a detail information of an accomplished transaction
       operationId: get-ottocash-payment
       responses:
         '200':
@@ -68,15 +69,124 @@ paths:
                     meta:
                       debug_param: wrong payment id
                     trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
-      description: get a detail information of an accomplished transaction
       security:
-        - client-grant: []
+        - default:
+            - optima-client
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
+    parameters:
+      - name: sof_id
+        in: path
+        description: a transaction id which resulted from a successful payment
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+  /users:
+    post:
       tags:
-        - transaction
+        - user
+      summary: register a new user
+      description: create a new user which resulted a new user-api-key
+      operationId: user-registration
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - app_code
+                - trace_id
+              type: object
+              properties:
+                app_code:
+                  maxLength: 32
+                  minLength: 1
+                  type: string
+                trace_id:
+                  maxLength: 50
+                  minLength: 1
+                  type: string
+            examples:
+              create-user-example:
+                value:
+                  app_code: PEDE
+                  trace_id: kiop09u2lljas
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user_api_key:
+                    type: string
+                  response_code:
+                    type: string
+                  response_message:
+                    type: string
+                  meta:
+                    $ref: '#/components/schemas/meta'
+                  trace_id:
+                    type: string
+              examples:
+                user-response:
+                  value:
+                    response_code: G0000
+                    response_message: SUCCESS
+                    user_api_key: 8uoaopsmd0
+                    meta:
+                      debug_param: ''
+                    trace_id: 890hjukolpoyuio
+      security:
+        - default:
+            - optima-client
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
   /ottocash/payments:
     post:
+      tags:
+        - transaction
       summary: Perform a payment using ottocash
+      description: create a payment request to ottocash server
       operationId: create-ottocash-payment
+      requestBody:
+        description: A payment request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payment-request'
+            examples:
+              payment-req-sample:
+                value:
+                  account_number: '085780873248'
+                  trace_id: blr-231-890
+                  product_details:
+                    product_code: SIMANIS
+                    product_name: Pembelian Emas
+                    billing_group: INVESTMENT
+                  references:
+                    app_reference_number: PEDE-89011234
+                    app_code: PEDE
+                    user_api_key: cd78h1loenuxmq
+                  money:
+                    amount: 8000
+                    fee: 0
+                  credentials:
+                    password:
+                      key_version: 2
+                      value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
+                      format: aes-cbc
+                  description: buy a gold
       responses:
         '200':
           description: OK
@@ -124,94 +234,15 @@ paths:
                     meta:
                       debug_param: HMAC verification failed
                     trace_id: 8B45E57B2D28BC4C238BEC01BCC68796
-      description: create a payment request to ottocash server
       security:
-        - client-grant: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/payment-request'
-            examples:
-              payment-req-sample:
-                value:
-                  account_number: '085780873248'
-                  trace_id: blr-231-890
-                  product_details:
-                    product_code: SIMANIS
-                    product_name: Pembelian Emas
-                    billing_group: INVESTMENT
-                  references:
-                    app_reference_number: PEDE-89011234
-                    app_code: PEDE
-                    user_api_key: cd78h1loenuxmq
-                  money:
-                    amount: 8000
-                    fee: 0
-                  credentials:
-                    password:
-                      key_version: 2
-                      value: 0bGKqoTexw7QAt0OpuCHHMwMpadqKuSCDaOhjiGkL7cdxCxROlQR2yfg3YDz44MeqwP8fe+l45GvGvDyjE7g5LVQMAxDyaA+2HENSlKkEExS+uHfjYcxjbCBlwEbMPf9zS3cKYHA2PbHNxpa8Aubr9KkBENxORqB2zzw0e0HmSMHJu1kcWA9M1AIFIpPSiCTJuCmg3E4KNzShFlP5LbBiOWtQhHts4G7geSgUtgWuv4=
-                      format: aes-cbc
-                  description: buy a gold
-        description: A payment request
-      tags:
-        - transaction
-  /users:
-    post:
-      summary: register a new user
-      operationId: user-registration
-      responses:
-        '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user_api_key:
-                    type: string
-                  response_code:
-                    type: string
-                  response_message:
-                    type: string
-                  meta:
-                    $ref: '#/components/schemas/meta'
-                  trace_id:
-                    type: string
-              examples:
-                user-response:
-                  value:
-                    response_code: G0000
-                    response_message: SUCCESS
-                    user_api_key: 8uoaopsmd0
-                    meta:
-                      debug_param: ''
-                    trace_id: 890hjukolpoyuio
-      description: create a new user which resulted a new user-api-key
-      security:
-        - client-grant: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                app_code:
-                  type: string
-                trace_id:
-                  type: string
-              required:
-                - app_code
-                - trace_id
-            examples:
-              create-user-example:
-                value:
-                  app_code: PEDE
-                  trace_id: kiop09u2lljas
-        description: ''
-      tags:
-        - user
+        - default:
+            - optima-client
+      x-auth-type: Application & Application User
+      x-throttling-tier: Unlimited
+      x-wso2-application-security:
+        security-types:
+          - oauth2
+        optional: false
 components:
   schemas:
     payment-request:
@@ -222,9 +253,13 @@ components:
         account_number:
           type: string
           description: fill it with mobile phone number
+          minLength: 1
+          maxLength: 24
         trace_id:
           type: string
           description: it should be defined unique for debugging purpose
+          minLength: 1
+          maxLength: 50
         product_details:
           type: object
           required:
@@ -235,12 +270,18 @@ components:
             product_name:
               type: string
               description: refer to product name which defined by ottocash
+              minLength: 1
+              maxLength: 32
             billing_group:
               type: string
               description: refer to billing id which defined by ottocash
+              minLength: 1
+              maxLength: 32
             product_code:
               type: string
               description: refere to product code which defined by ottocash
+              minLength: 1
+              maxLength: 32
         references:
           type: object
           required:
@@ -251,10 +292,16 @@ components:
             app_reference_number:
               type: string
               description: this reference will be used for reverse purpose
+              minLength: 1
+              maxLength: 32
             app_code:
               type: string
+              minLength: 1
+              maxLength: 32
             user_api_key:
               type: string
+              minLength: 32
+              maxLength: 32
         credentials:
           type: object
           required:
@@ -269,10 +316,14 @@ components:
               properties:
                 key_version:
                   type: string
+                  minLength: 1
                 format:
                   type: string
+                  minLength: 1
                 value:
                   type: string
+                  minLength: 1
+                  maxLength: 300
         money:
           type: object
           required:
@@ -281,10 +332,14 @@ components:
           properties:
             amount:
               type: integer
+              minimum: 0
             fee:
               type: integer
+              minimum: 0
         description:
           type: string
+          minLength: 0
+          maxLength: 50
       required:
         - account_number
         - trace_id
@@ -296,7 +351,6 @@ components:
     payment-response:
       title: payment-response
       type: object
-      description: a response after successfully capturing a payment
       properties:
         response_code:
           type: string
@@ -341,17 +395,17 @@ components:
           type: string
         state:
           type: string
+      description: a response after successfully capturing a payment
     meta:
       title: meta
       type: object
-      description: 'Meta struct for additional details. Might be used for troubleshooting, etc'
       properties:
         debug_param:
           type: string
+      description: 'Meta struct for additional details. Might be used for troubleshooting, etc'
     error-response:
       title: error-response
       type: object
-      description: a general error response
       properties:
         account_number:
           type: string
@@ -363,16 +417,48 @@ components:
           type: string
         meta:
           $ref: '#/components/schemas/meta'
+      description: a general error response
   securitySchemes:
-    client-grant:
+    default:
       type: oauth2
       flows:
-        clientCredentials:
-          tokenUrl: 'https://token.ottodigital.id'
-          scopes:
-            optima-client: read-write resource for client
+        implicit:
+          authorizationUrl: 'https://test.com'
           refreshUrl: 'https://refresh.ottodigital.id'
-      description: a grant access that will be used by partner
-tags:
-  - name: user
-  - name: transaction
+          scopes:
+            optima-client: a scope for optima's client
+          x-scopes-bindings:
+            optima-client: optima-client
+x-wso2-auth-header: Authorization
+x-wso2-cors:
+  corsConfigurationEnabled: false
+  accessControlAllowOrigins:
+    - '*'
+  accessControlAllowCredentials: false
+  accessControlAllowHeaders:
+    - authorization
+    - Access-Control-Allow-Origin
+    - Content-Type
+    - SOAPAction
+  accessControlAllowMethods:
+    - GET
+    - PUT
+    - POST
+    - DELETE
+    - PATCH
+    - OPTIONS
+x-wso2-production-endpoints:
+  urls:
+    - 'https://antares.pede.id/funds/v1'
+  type: http
+x-wso2-sandbox-endpoints:
+  urls:
+    - 'https://antares.pede.id/funds/v1'
+  type: http
+x-wso2-basePath: /funds/v1
+x-wso2-transports:
+  - http
+  - https
+x-wso2-response-cache:
+  enabled: false
+  cacheTimeoutInSeconds: 300
